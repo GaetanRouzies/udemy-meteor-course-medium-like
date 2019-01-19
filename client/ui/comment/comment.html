@@ -1,0 +1,26 @@
+<template name="comment_form">
+    <div class="card">
+        <div class="card-body">
+            <form class="js-create-comment">
+                <label>Laissez un commentaire</label>
+                <input type="text" class="form-control mb-2" placeholder="Commentaire" name="content">
+                <button type="submit" class="btn btn-success float-right">Commenter</button>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="comment_list">
+    {{#each comment in comments}}
+        {{> comment_single comment=comment}}
+    {{/each}}
+</template>
+
+<template name="comment_single">
+    <div class="card my-2">
+        <div class="card-body">
+            <h5 class="card-title">{{getUserFullname comment.ownerId}}</h5>
+            <p class="card-text">{{comment.content}}</p>
+        </div>
+    </div>
+</template>

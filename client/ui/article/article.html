@@ -1,0 +1,85 @@
+<template name="article_page">
+    <div class="card my-2">
+        <div class="card-body">
+            <div class="text-center">
+                <h2 class="card-title">{{article.title}}</h2>
+                <h6 class="card-subtitle text-muted mb-2">
+                    Publié le {{getDisplayDateTime article.createdAt}} par {{getUserFullname article.ownerId}}
+                </h6>
+                {{#if equals article.ownerId currentUser._id}}
+                <a href="/article/{{article._id}}/edit" class="btn btn-primary btn-sm mb-3">Modifier</a>
+                {{/if}}
+                <p class="card-text text-left" style="white-space: pre-line;">
+                    {{article.content}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="mb-5">
+        {{> comment_form}}
+        {{> comment_list}}
+    </div>
+</template>
+
+<template name="article_create_form">
+    <div class="card my-2">
+        <h5 class="card-header">Publier un article</h5>
+        <div class="card-body">
+            <form class="js-create-article">
+                <input type="text" class="form-control mb-2" placeholder="Titre" name="title">
+                <textarea name="content" rows="20" class="form-control mb-2" placeholder="Contenu de l'article"></textarea>
+                <div class="my-1 text-right">
+                    <a href="/" class="btn btn-outline-secondary">Annuler</a>
+                    <button type="submit" class="btn btn-success">Publier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="article_edit_form">
+    <div class="card my-2">
+        <h5 class="card-header">Modifier un article</h5>
+        <div class="card-body">
+            <form class="js-edit-article">
+                <input type="text" class="form-control mb-2" placeholder="Titre" name="title" value="{{article.title}}">
+                <textarea name="content" rows="20" class="form-control mb-2" 
+                placeholder="Contenu de l'article">{{article.content}}</textarea>
+                <div class="my-1 text-right">
+                    <button type="button" class="btn btn-danger float-left js-delete-article">Supprimer</button>
+                    <a class="btn btn-outline-secondary" href="/article/{{article._id}}">Annuler</a>
+                    <button type="submit" class="btn btn-success">Modifier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template name="article_list">
+    <h3>Liste des articles</h3>
+    {{#each article in articles}}
+        {{> article_single article=article}}
+    {{else}}
+        <h4 class="text-center text-muted">Aucun article à afficher</h4>
+    {{/each}}
+    <nav>
+        <ul class="pagination">
+            {{#each page in pages}}
+                <li class="page-item {{#if page.active}}active{{/if}}">
+                    <a href="/page/{{page.index}}" class="page-link">{{page.index}}</a>
+                </li>
+            {{/each}}
+        </ul>
+    </nav>
+</template>
+
+<template name="article_single">
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5 class="card-title"><a href="/article/{{article._id}}">{{article.title}}</a></h5>
+            <p class="card-subtitle text-muted">
+                Publié le {{getDisplayDateTime article.createdAt}} par {{getUserFullname article.ownerId}}
+            </p>
+        </div>
+    </div>
+</template>
